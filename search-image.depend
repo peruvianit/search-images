@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1698168760 source:c:\progetti\c\search-images\search-image\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<dirent.h>
+	<stdbool.h>
+	<sys/stat.h>
+	<io.h>
+	<direct.h>
+	<time.h>
+
