@@ -1,92 +1,38 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <dirent.h>
-#include <stdbool.h>
 
-#include <sys/stat.h>
-#include <io.h>
-#include <direct.h>
+#include "fileUtils.h"
+#include "summary.h"
+#include "generateID.h"
 
-#include <time.h>
-
-#define DEBUG 1
+#define DEBUG 0
 #define COPIA_IMMAGINE 1
 
-const char* PATH_ORIGIN = "C://Temp";
-const char* PATH_DESTINATION = "C://Temp//Fotos";
+static const char* PATH_ORIGIN = "C://Temp";
+static const char* PATH_DESTINATION = "C://Temp//Fotos";
 
-struct Search_files{
-    int directoryReads;
-    int filesReads;
-    int imagesReads;
-};
+static void leggiFileRicorsivamente(const char*, struct Search_files*);
 
-enum Format_images{
-    JPEG, PNG, GIF, BMP
-};
+int main() {
 
-int copiaFile(const char* percorsoOrigine, const char* percorsoDestinazione);
+    struct Search_files search_files = {0};
 
-void cambiaEstensione(char* percorsoFile, const char* nuovaEstensione);
+#if DEBUG
+    puts("Inizio applicazione");
+    printf("Inzio di lettura dalla cartella %s\n", PATH_ORIGIN);
+#endif // DEBUG
 
-void stampaSummary(struct Search_files *search_files);
+    leggiFileRicorsivamente(PATH_ORIGIN, &search_files);
 
-long long generateUniqueID();
-
-int isImage(const char *filename) {
-
-    FILE *file = fopen(filename, "rb");
-    if (file == NULL) {
-        perror("Errore nell'apertura del file :");
-        perror(filename);
-        return -1;
-    }
-
-    unsigned char header[10]; // Dimensione dell'intestazione da esaminare
-    size_t bytesRead = fread(header, 1, sizeof(header), file);
-    fclose(file);
-
-    if (bytesRead < sizeof(header)) {
-        // Il file non contiene un'intestazione completa
-        return -1;
-    }
-
-    // Analizza l'intestazione per rilevare formati di immagine comuni
-    if (header[0] == 0xFF && header[1] == 0xD8) {
-        // JPEG
-        return JPEG;
-    } else if (header[0] == 0x89 && header[1] == 0x50 && header[2] == 0x4E && header[3] == 0x47) {
-        // PNG
-        return PNG;
-    } else if (header[0] == 0x47 && header[1] == 0x49 && header[2] == 0x46) {
-        // GIF
-        return GIF;
-    } else if (header[0] == 0x42 && header[1] == 0x4D) {
-        // BMP
-        return BMP;
-    }
-
-    // Aggiungi altri formati di immagine, se necessario
-
-    return -1;
+    stampaSummary(&search_files);
+#if DEBUG
+    puts("Fine applicazione");
+#endif // DEBUG
+    getchar();
+    return 0;
 }
 
-bool exists(const char *path) {
-    return _access(path, 0) == 0;
-}
-
-bool isDirectory(const char *path) {
-    struct _stat st;
-
-    if (_stat(path, &st) == 0) {
-        return S_ISDIR(st.st_mode);
-    }
-
-    return false;
-}
-
-void leggiFileRicorsivamente(const char *percorso, struct Search_files *search_files) {
+static void leggiFileRicorsivamente(const char *percorso, struct Search_files *search_files) {
     if (exists(percorso)) {
         struct dirent *entry;
         DIR *dp = opendir(percorso);
@@ -128,7 +74,9 @@ void leggiFileRicorsivamente(const char *percorso, struct Search_files *search_f
                 if (immagine >= 0){
                     search_files->imagesReads++;
 
-                    char nuovoFile[256] = {NULL};
+                    char nuovoFile[256];
+                    strcpy(nuovoFile, "");
+
                     strcat(nuovoFile, str_unique_id);
 
                     switch (immagine){
@@ -168,85 +116,4 @@ void leggiFileRicorsivamente(const char *percorso, struct Search_files *search_f
     }else {
         printf("Percorso non esiste: %s\n", percorso);
     }
-}
-
-
-int main() {
-
-    struct Search_files search_files = {0};
-
-    const char *percorso_iniziale = PATH_ORIGIN; // Sostituisci con il tuo percorso
-#if DEBUG
-    puts("Inizio applicazione");
-    printf("Inzio di lettura dalla cartella %s\n", percorso_iniziale);
-#endif // DEBUG
-
-    leggiFileRicorsivamente(percorso_iniziale, &search_files);
-
-    stampaSummary(&search_files);
-#if DEBUG
-    puts("Fine applicazione");
-#endif // DEBUG
-    getchar();
-    return 0;
-}
-
-
-long long generateUniqueID() {
-    static unsigned int counter = 0;
-    time_t timestamp = time(NULL);
-
-    // Combina il timestamp e il contatore per creare l'identificatore
-    long long unique_id = (long long)timestamp * 1000 + counter;
-    counter++;
-
-    return unique_id;
-}
-
-// Funzione per copiare un file da un percorso di origine a un percorso di destinazione
-int copiaFile(const char* percorsoOrigine, const char* percorsoDestinazione) {
-    FILE* fileOrigine = fopen(percorsoOrigine, "rb");
-    if (fileOrigine == NULL) {
-        perror("Errore nell'apertura del file di origine");
-        return 1;
-    }
-
-    FILE* fileDestinazione = fopen(percorsoDestinazione, "wb");
-    if (fileDestinazione == NULL) {
-        perror("Errore nell'apertura del file di destinazione");
-        fclose(fileOrigine);
-        return 1;
-    }
-
-    int carattere;
-    while ((carattere = fgetc(fileOrigine)) != EOF) {
-        fputc(carattere, fileDestinazione);
-    }
-
-    fclose(fileOrigine);
-    fclose(fileDestinazione);
-
-    printf("File copiato con successo!\n");
-    return 0;
-}
-
-// Funzione per cambiare l'estensione di un file
-void cambiaEstensione(char* percorsoFile, const char* nuovaEstensione) {
-    // Trova la posizione dell'ultimo punto (.) nel percorso del file
-    char* punto = strrchr(percorsoFile, '.');
-
-    if (punto != NULL) {
-        // Sovrascrivi l'estensione esistente con la nuova estensione
-        strcpy(punto, nuovaEstensione);
-    } else {
-        // Se non è stata trovata un'estensione esistente, aggiungi la nuova estensione alla fine del percorso
-        strcat(percorsoFile, nuovaEstensione);
-    }
-}
-
-void stampaSummary(struct Search_files *search_files){
-    printf("Summary\n");
-    printf("Directory Reads : %d\n", search_files->directoryReads);
-    printf("Files Reads : %d\n", search_files->filesReads);
-    printf("Images Reads : %d\n", search_files->imagesReads);
 }

@@ -31,9 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="fileUtils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fileUtils.h" />
+		<Unit filename="generateID.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="generateID.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="summary.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="summary.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
