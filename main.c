@@ -1,3 +1,14 @@
+/**
+ * @file main.c
+ * @brief Programma che cerca le immagine nel file system a partire di
+ *        un path di origine.
+ *
+ * @date 25/10/2023
+ * @version 1.0
+ * @since 25/10/2023
+ * @autor Peruvianit
+ */
+
 #include <stdio.h>
 #include <dirent.h>
 
@@ -5,11 +16,11 @@
 #include "summary.h"
 #include "generateID.h"
 
-#define DEBUG 0
+#define DEBUG 1
 #define COPIA_IMMAGINE 1
 
-static const char* PATH_ORIGIN = "C://Temp";
-static const char* PATH_DESTINATION = "C://Temp//Fotos";
+static const char* PATH_ORIGIN = "D://Disco TrekStor";
+static const char* PATH_DESTINATION = "C://Temp//Fotos-2";
 
 static void leggiFileRicorsivamente(const char*, struct Search_files*);
 

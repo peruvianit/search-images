@@ -1,3 +1,14 @@
+/**
+ * @file fileUtils.c
+ * @brief Funzioni per la gestione dei files e Directory
+ *
+ * @date 25/10/2023
+ * @version 1.0
+ * @since 25/10/2023
+ * @autor Peruvianit
+ */
+
+
 #include <stdio.h>
 #include <dirent.h>
 #include <stdbool.h>
@@ -11,10 +22,22 @@ struct Search_files{
     unsigned int imagesReads;
 };
 
+/**
+ * @brief verifica se è permesso accedere al file/directory.
+ *
+ * @param path path del file/directory
+ * @return true se è permesso accedere al file/directory
+ */
 bool exists(const char *path) {
     return _access(path, 0) == 0;
 }
 
+/**
+ * @brief verifica se è una directory.
+ *
+ * @param path path del file/directory
+ * @return true se è una directory
+ */
 bool isDirectory(const char *path) {
     struct _stat st;
 
@@ -25,6 +48,15 @@ bool isDirectory(const char *path) {
     return false;
 }
 
+/**
+ * @brief verifica se è una immagine.
+ *
+ * La verifica è fatta leggendo il file binario e prendendo il descriptor o e bytes iniziali
+ * e verificanddo che tipo di fil, sapendo la secuenza de bytes.
+ *
+ * @param filename path del file
+ * @return true se è una immagine
+ */
 int isImage(const char *filename) {
 
     FILE *file = fopen(filename, "rb");
@@ -63,7 +95,14 @@ int isImage(const char *filename) {
     return -1;
 }
 
-// Funzione per copiare un file da un percorso di origine a un percorso di destinazione
+/**
+ * @brief copia un file in un'altra destinazione.
+ *
+ * Funzione per copiare un file da un percorso di origine a un percorso di destinazione.
+ *
+ * @param percorsoOrigine path originale
+ * @return percorsoDestinazione path dove se voglia copiare il file
+ */
 int copiaFile(const char* percorsoOrigine, const char* percorsoDestinazione) {
     FILE* fileOrigine = fopen(percorsoOrigine, "rb");
     if (fileOrigine == NULL) {
