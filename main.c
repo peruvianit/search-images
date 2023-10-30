@@ -16,13 +16,17 @@
 #include "summary.h"
 #include "generateID.h"
 
-#define DEBUG 1
+#define DEBUG 0
 #define COPIA_IMMAGINE 1
 
-static const char* PATH_ORIGIN = "D://Disco TrekStor";
-static const char* PATH_DESTINATION = "C://Temp//Fotos-2";
+static const char *PATH_ORIGIN = "C://Temp//images";
+static const char *PATH_DESTINATION = "C://Temp//Foto";
+static const char *EXCLUDE_EXTENSION_IMAGES_FORMATS[] = {".JPEG", ".JPG", ".PNG", ".BMP", ".GIF"};
+static const int EXCLUDE_IMAGES = 0;
 
 static void leggiFileRicorsivamente(const char*, struct Search_files*);
+
+static bool exludeFile(const char *[], const char*);
 
 int main() {
 
@@ -61,6 +65,10 @@ static void leggiFileRicorsivamente(const char *percorso, struct Search_files *s
 
             if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
                 continue;  // Ignora le directory speciali "." e ".."
+            }
+
+            if (EXCLUDE_IMAGES && exludeFile(EXCLUDE_EXTENSION_IMAGES_FORMATS, entry->d_name)){
+                continue;
             }
 #if DEBUG
             printf("[%s]\n", path_file);
@@ -127,4 +135,28 @@ static void leggiFileRicorsivamente(const char *percorso, struct Search_files *s
     }else {
         printf("Percorso non esiste: %s\n", percorso);
     }
+}
+
+static bool exludeFile(const char *filter[], const char* value){
+    const char *punto = strrchr(value, '.');
+
+    // Trova la posizione dell'ultimo punto (.) nel percorso
+    if (punto) {
+
+        // Estrai l'estensione dal percorso
+        const char *estensione = punto;
+
+        int lunghezzaDelVettore = sizeof(filter) / sizeof(filter[0]);
+
+        int exclude = 0;
+
+        for (int i = 0; i < lunghezzaDelVettore; i++) {
+            if (strcasecmp(estensione, filter[i]) == 0) {
+                printf("file da escludere %s \n", value);
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
