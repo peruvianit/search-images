@@ -3,8 +3,8 @@
  * @brief Programma che cerca le immagine nel file system a partire di
  *        un path di origine.
  *
- * @date 25/10/2023
- * @version 1.0
+ * @date 31/10/2023
+ * @version 1.0.0
  * @since 25/10/2023
  * @autor Peruvianit
  */
