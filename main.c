@@ -4,7 +4,7 @@
  *        un path di origine.
  *
  * @date 31/10/2023
- * @version 1.0.0
+ * @version 1.0.1
  * @since 25/10/2023
  * @autor Peruvianit
  */
@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
         puts("Fine applicazione");
     }
 
+    puts("\n\n\Pressiona un carattere per uscire >>>>");
     getchar();
     return 0;
 }
@@ -76,9 +77,6 @@ static void leggiFileRicorsivamente(const char *percorso, struct Search_files *s
                 continue;  // Ignora le directory speciali "." e ".."
             }
 
-            if (configApp.exludeImagesFlag && exludeFile(EXCLUDE_EXTENSION_IMAGES_FORMATS, entry->d_name)){
-                continue;
-            }
             if (configApp.verboseFlag) {
                 printf("[%s]\n", path_file);
             }
@@ -88,6 +86,8 @@ static void leggiFileRicorsivamente(const char *percorso, struct Search_files *s
                 leggiFileRicorsivamente(path_file, search_files);
 
             } else {
+                search_files->filesReads++;
+
                 long long unique_id = generateUniqueID();
 
                 char str_unique_id[50]; // Dichiaro una stringa di destinazione
@@ -97,11 +97,14 @@ static void leggiFileRicorsivamente(const char *percorso, struct Search_files *s
 
                 //printf("%s\n", str_unique_id);
 
-                search_files->filesReads++;
                 int immagine = isImage(path_file);
 
                 if (immagine >= 0){
                     search_files->imagesReads++;
+
+                    if (configApp.exludeImagesFlag && exludeFile(EXCLUDE_EXTENSION_IMAGES_FORMATS, entry->d_name)){
+                        continue;
+                    }
 
                     char nuovoFile[256];
                     strcpy(nuovoFile, "");
@@ -131,6 +134,7 @@ static void leggiFileRicorsivamente(const char *percorso, struct Search_files *s
 
                     if (configApp.copyFlag) {
                         copiaFile(path_file, path_file_nuovo);
+                        search_files->imagesCopied++;
                     }
 
                     if (configApp.verboseFlag) {
@@ -186,26 +190,28 @@ static void leggeOpzioni(struct ConfigApp *configApp, int argc, char *argv[]){
     char *originPath = NULL;
     char *destinationPath = NULL;
 
+    puts("");
+
     while ((opt = getopt(argc, argv, "o:d:nevh")) != -1) {
         switch (opt) {
             case 'o':
                 originPath = optarg;
-                printf("Percorso di origine: %s\n", originPath);
+                printf(">> Percorso di origine: %s\n", originPath);
                 break;
             case 'd':
                 destinationPath = optarg;
-                printf("Percorso di destinazione: %s\n", destinationPath);
+                printf(">> Percorso di destinazione: %s\n", destinationPath);
                 break;
             case 'n':
-                printf("Opzione -n attivata.\n");
+                printf(">> Opzione -n attivata.\n");
                 copyFlag = 0;
                 break;
             case 'e':
-                printf("Opzione -e attivata.\n");
+                printf(">> Opzione -e attivata.\n");
                 exludeImagesFlag = 1;
                 break;
             case 'v':
-                printf("Opzione -v attivata.\n");
+                printf(">> Opzione -v attivata.\n");
                 verboseFlag = 1;
                 break;
             case 'h':
