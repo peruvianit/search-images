@@ -217,7 +217,7 @@ static void leggeOpzioni(struct ConfigApp *configApp, int argc, char *argv[]){
         }
     }
 
-    if (helpFlag && (copyFlag + exludeImagesFlag + verboseFlag) == 0) {
+    if (helpFlag && (copyFlag + exludeImagesFlag + verboseFlag) == 1) {
         printf("Programma per la ricerca di immagini da un path di origine e vengono copiate su una cartella destinazione, il nome delle immagini sono generate con un nome univoco.\n");
         printf("-o\t path di origine dove se vuole iniziare a cercare l'immagine\n");
         printf("-d\t path destinazione dove saranno copiate l'immagine se non 'e attiva l'opzione -n\n");
