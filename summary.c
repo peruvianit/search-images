@@ -21,8 +21,12 @@
  * @return
  */
 void stampaSummary(struct Search_files *search_files){
-    printf("\n\nSummary\n");
-    printf("Directory Reads : %d\n", search_files->directoryReads);
-    printf("Files Reads : %d\n", search_files->filesReads);
-    printf("Images Reads : %d\n", search_files->imagesReads);
+    puts("\n###########################################");
+    printf("SUMMARY\n");
+    printf("-------------------------------------------\n");
+    printf("Directory Reads \t: %d\n", search_files->directoryReads);
+    printf("Files Reads \t\t: %d\n", search_files->filesReads);
+    printf("Images Reads \t\t: %d\n", search_files->imagesReads);
+    printf("Images Copied \t\t: %d\n", search_files->imagesCopied);
+    puts("###########################################");
 }

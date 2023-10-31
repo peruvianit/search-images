@@ -5,6 +5,7 @@ struct Search_files{
     unsigned int directoryReads;
     unsigned int filesReads;
     unsigned int imagesReads;
+    unsigned int imagesCopied;
 };
 
 void stampaSummary(struct Search_files* );
