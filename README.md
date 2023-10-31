@@ -1,4 +1,4 @@
-# Search-Images 1.0.0
+# Search-Images 1.0.1
 > Compiler : MinGW
 > 
 > Ide      : CLion
@@ -31,7 +31,7 @@ Utilizzo: ./search_image.exe -o <PATH ORIGINE> -d <PATH DESTINAZIONE> [-e] [-n] 
 
 ### Bugs
 
-- [v1.0.1] 
+- [v1.0.1] calcolo per il Summary 
 
 ### Todos
 
