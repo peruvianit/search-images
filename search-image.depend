@@ -1,0 +1,34 @@
+# depslib dependency file v1.0
+1698314140 source:c:\progetti\c\search-images\search-image\main.c
+	<stdio.h>
+	<dirent.h>
+	"fileUtils.h"
+	"summary.h"
+	"generateID.h"
+
+1698251313 source:c:\progetti\c\search-images\search-image\fileutils.c
+	<stdio.h>
+	<dirent.h>
+	<stdbool.h>
+	<sys/stat.h>
+	"fileUtils.h"
+
+1698224592 c:\progetti\c\search-images\search-image\fileutils.h
+	<stdbool.h>
+
+1698647236 c:\progetti\c\search-images\search-image\summary.h
+
+1698227473 source:c:\progetti\c\search-images\search-image\summury.c
+	<stdio.h>
+	"summary.h"
+
+1698250716 source:c:\progetti\c\search-images\search-image\summary.c
+	<stdio.h>
+	"summary.h"
+
+1698225118 c:\progetti\c\search-images\search-image\generateid.h
+
+1698250927 source:c:\progetti\c\search-images\search-image\generateid.c
+	<time.h>
+	"generateID.h"
+
