@@ -23,20 +23,20 @@ struct Search_files{
 };
 
 /**
- * @brief verifica se è permesso accedere al file/directory.
+ * @brief verifica se ï¿½ permesso accedere al file/directory.
  *
  * @param path path del file/directory
- * @return true se è permesso accedere al file/directory
+ * @return true se ï¿½ permesso accedere al file/directory
  */
 bool exists(const char *path) {
     return _access(path, 0) == 0;
 }
 
 /**
- * @brief verifica se è una directory.
+ * @brief verifica se ï¿½ una directory.
  *
  * @param path path del file/directory
- * @return true se è una directory
+ * @return true se ï¿½ una directory
  */
 bool isDirectory(const char *path) {
     struct _stat st;
@@ -49,13 +49,13 @@ bool isDirectory(const char *path) {
 }
 
 /**
- * @brief verifica se è una immagine.
+ * @brief verifica se ï¿½ una immagine.
  *
- * La verifica è fatta leggendo il file binario e prendendo il descriptor o e bytes iniziali
+ * La verifica ï¿½ fatta leggendo il file binario e prendendo il descriptor o e bytes iniziali
  * e verificanddo che tipo di fil, sapendo la secuenza de bytes.
  *
  * @param filename path del file
- * @return true se è una immagine
+ * @return true se ï¿½ una immagine
  */
 int isImage(const char *filename) {
 
@@ -125,6 +125,5 @@ int copiaFile(const char* percorsoOrigine, const char* percorsoDestinazione) {
     fclose(fileOrigine);
     fclose(fileDestinazione);
 
-    printf("File copiato con successo!\n");
     return 0;
 }
